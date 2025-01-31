@@ -5,6 +5,9 @@ const mongoose=require('mongoose');
 const connectDB = require('./database/database');
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
+const checkDependencies = require('./utils/versionCheck');
+const securityMonitor = require('./middleware/securityMonitor');
+const logger = require('./utils/logger');
 
 
 // 2. Creating an express app
@@ -35,6 +38,9 @@ app.use(cors(corsOptions))
 // Connecting to the database
 connectDB();
 
+// Check dependencies on startup
+checkDependencies();
+
 // 3. Defining the port
 const PORT=process.env.PORT;
 
@@ -50,7 +56,29 @@ app.get('/new_test',(req,res)=>{
 app.use('/api/user',require('./routes/userRoutes'))
 app.use('/api/product',require('./routes/productRoutes'))
 
+// Apply security monitoring to all requests
+app.use(securityMonitor);
 
+// Log server startup
+logger.info('Server starting...', {
+    nodeEnv: process.env.NODE_ENV,
+    port: process.env.PORT
+});
+
+// Error handling middleware with logging
+app.use((err, req, res, next) => {
+    logger.error('Unhandled error', {
+        error: err.message,
+        stack: err.stack,
+        path: req.path,
+        method: req.method
+    });
+
+    res.status(500).json({
+        success: false,
+        message: 'Internal server error'
+    });
+});
 
 // http://localhost:5000/api/user/create
 
