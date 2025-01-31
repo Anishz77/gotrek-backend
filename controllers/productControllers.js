@@ -4,7 +4,7 @@ const fs = require('fs')
 
 // Creating Product Function
 const createProduct = async (req, res) => {
-    // check incoming d
+    // check incoming da
     console.log(req.body)
     console.log(req.files)
 
