@@ -8,7 +8,7 @@ router.post('/create',userControllers.createUser);
 // login user api
 router.post('/login', userControllers.loginUser)
 
-// forgot p
+// forgot pa
 router.post('/forgot_password', userControllers.forgotPassword)
 
 //
