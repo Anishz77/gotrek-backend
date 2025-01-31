@@ -1,27 +1,21 @@
-const router=require('express').Router()
-const productControllers=require('../controllers/productControllers')
-const searchController = require('../controllers/searchController');
-const { authGuard, adminGuard } = require('../middleware/authGuard')
+const router = require('express').Router();
+const productControllers = require('../controllers/productControllers');
+const { authGuard, adminGuard } = require('../middleware/authGuard');
+const apiLimiter = require('../middleware/rateLimiter');
 
-// Making a create user API
-router.post('/create',productControllers.createProduct)
+// Apply rate limiting to all routes
+router.use(apiLimiter);
 
-// fetching all
-router.get('/get_all_products', productControllers.getAllProducts)
+// Public routes
+router.get('/get_all_products', productControllers.getAllProducts);
 
-// fetching single product
-router.get('/get_single_product/:id', authGuard, productControllers.getProduct)
+// Protected routes
+router.get('/get_single_product/:id', authGuard, productControllers.getProduct);
 
-// deleting Product
-router.delete('/delete_product/:id',adminGuard, productControllers.deleteProduct)
-
-// updating product
-router.put('/update_product/:id',adminGuard, productControllers.updateProduct)
-
-//
-
-
-
+// Admin routes
+router.post('/create', adminGuard, productControllers.createProduct);
+router.put('/update_product/:id', adminGuard, productControllers.updateProduct);
+router.delete('/delete_product/:id', adminGuard, productControllers.deleteProduct);
 
 // exporting
-module.exports=router;
+module.exports = router;

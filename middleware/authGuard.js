@@ -1,99 +1,76 @@
-
 const jwt = require('jsonwebtoken')
+const logger = require('../utils/logger')
 
 const authGuard = (req, res, next) => {
-
-    console.log(req.headers)
-
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader) {
-        return res.status(400).json({
-            success: false,
-            message: 'Authorization header not found!'
-        })
-    }
-
-
-    const token = authHeader.split(' ')[1]
-
-    if (!token || token === '') {
-        return res.status(400).json({
-            success: false,
-            message: 'Token is missing!'
-        })
-    }
-
-
     try {
-        console.log(token)
-        const decodedUser = jwt.verify(token, process.env.JWT_SECRET)
-        req.user = decodedUser;
-        next()
+        const authHeader = req.headers.authorization;
+        if (!authHeader?.startsWith('Bearer ')) {
+            logger.warn('Auth failed: No token', { ip: req.ip, path: req.path });
+            return res.status(401).json({
+                success: false,
+                message: 'Access denied'
+            });
+        }
 
+        const token = authHeader.split(' ')[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+        next();
     } catch (error) {
-        console.log(error)
-        res.status(400).json({
+        logger.error('Auth error', { 
+            error: error.message, 
+            ip: req.ip, 
+            path: req.path 
+        });
+        res.status(401).json({
             success: false,
-            message: "Not Authenticated!"
-        })
-
+            message: 'Invalid token'
+        });
     }
 }
-
 
 // Admin Guard
 
 const adminGuard = (req, res, next) => {
-
-    console.log(req.headers)
-
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader) {
-        return res.status(400).json({
-            success: false,
-            message: 'Authorization header not found!'
-        })
-    }
-
-
-    const token = authHeader.split(' ')[1]
-
-
-    if (!token || token === '') {
-        return res.status(400).json({
-            success: false,
-            message: 'Token is missing!'
-        })
-    }
-
-
     try {
-
-        // verifying token
-        const decodedUser = jwt.verify(token, process.env.JWT_SECRET)
-        req.user = decodedUser;
-
-        // checking for admin
-        if (!req.user.isAdmin) {
-            return res.status(400).JSON({
+        const authHeader = req.headers.authorization;
+        if (!authHeader?.startsWith('Bearer ')) {
+            logger.warn('Admin auth failed: No token', { ip: req.ip, path: req.path });
+            return res.status(401).json({
                 success: false,
-                message: "Permission Denied!"
-            })
+                message: 'Access denied'
+            });
         }
 
-        next()
+        const token = authHeader.split(' ')[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        
+        if (!decoded.isAdmin) {
+            logger.warn('Admin access denied', { 
+                userId: decoded.id, 
+                ip: req.ip, 
+                path: req.path 
+            });
+            return res.status(403).json({
+                success: false,
+                message: 'Admin access required'
+            });
+        }
 
+        req.user = decoded;
+        next();
     } catch (error) {
-        console.log(error)
-        res.status(400).json({
+        logger.error('Admin auth error', { 
+            error: error.message, 
+            ip: req.ip, 
+            path: req.path 
+        });
+        res.status(401).json({
             success: false,
-            message: "Not Authenticated!"
-        })
-
+            message: 'Invalid token'
+        });
     }
-}
+};
 
 module.exports = {
     authGuard,

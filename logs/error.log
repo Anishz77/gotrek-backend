@@ -1,0 +1,2 @@
+2025-01-31T12:45:41.556Z [error]: Login error: user.cleanExpiredSessions is not a function {"stack":"TypeError: user.cleanExpiredSessions is not a function\n    at loginUser (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\controllers\\userControllers.js:142:20)"}
+2025-01-31T12:45:48.606Z [error]: Login error: user.cleanExpiredSessions is not a function {"stack":"TypeError: user.cleanExpiredSessions is not a function\n    at loginUser (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\controllers\\userControllers.js:142:20)"}

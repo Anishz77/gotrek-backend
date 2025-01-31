@@ -3,15 +3,24 @@ const productModel = require("../models/productModel")
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const sendOtp = require('../service/sendOtp');
+const sanitizeInput = require('../utils/sanitize');
+const validatePassword = require('../utils/passwordValidator');
 
 const createUser = async (req, res) => {
-    console.log(req.body);
     const { firstName, lastName, email, password, phone } = req.body;
 
     if (!firstName || !lastName || !email || !password || !phone) {
         return res.json({
-            "success": false,
-            "message": "Please enter all fields!"
+            success: false,
+            message: "Please enter all fields!"
+        });
+    }
+
+    // Validate password strength
+    if (!validatePassword(password)) {
+        return res.json({
+            success: false,
+            message: "Password must be at least 8 characters long and contain uppercase, lowercase, number and special character"
         });
     }
 
@@ -52,18 +61,17 @@ const createUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-    console.log(req.body);
     const { email, password } = req.body;
 
     if (!email || !password) {
         return res.json({
-            "success": false,
-            "message": "Please enter all fields!"
+            success: false,
+            message: "Please enter all fields!"
         });
     }
 
     try {
-        const user = await userModel.findOne({ email: email });
+        const user = await userModel.findOne({ email });
         if (!user) {
             return res.json({
                 "success": false,
@@ -71,13 +79,46 @@ const loginUser = async (req, res) => {
             });
         }
 
-        const isValidPassword = await bcrypt.compare(password, user.password);
-        if (!isValidPassword) {
+        // Check if account is locked
+        if (user.isAccountLocked()) {
+            const minutesLeft = Math.ceil((user.lockUntil - Date.now()) / (1000 * 60));
             return res.json({
                 "success": false,
-                "message": "Incorrect Password!"
+                "message": `Account is locked. Please try again in ${minutesLeft} minutes.`
             });
         }
+
+        const isValidPassword = await bcrypt.compare(password, user.password);
+        
+        if (!isValidPassword) {
+            // Increment login attempts
+            user.loginAttempts += 1;
+
+            // Check if we need to lock the account
+            if (user.loginAttempts >= 5) {
+                user.isLocked = true;
+                user.lockUntil = new Date(Date.now() + 30 * 60 * 1000); // Lock for 30 minutes
+                await user.save();
+                
+                return res.json({
+                    "success": false,
+                    "message": "Account locked for 30 minutes due to too many failed attempts."
+                });
+            }
+
+            await user.save();
+            
+            return res.json({
+                "success": false,
+                "message": `Incorrect Password! ${5 - user.loginAttempts} attempts remaining.`
+            });
+        }
+
+        // Reset login attempts on successful login
+        user.loginAttempts = 0;
+        user.isLocked = false;
+        user.lockUntil = null;
+        await user.save();
 
         const token = await jwt.sign(
             { id: user._id, isAdmin: user.isAdmin },
@@ -243,6 +284,73 @@ const verifyOtpAndSetPassword = async (req, res) => {
     // Implementation needed
 };
 
+const changePassword = async (req, res) => {
+    const { userId, newPassword } = req.body;
+
+    try {
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.json({
+                "success": false,
+                "message": "User not found"
+            });
+        }
+
+        const randomSalt = await bcrypt.genSalt(10);
+        const hashPassword = await bcrypt.hash(newPassword, randomSalt);
+
+        // Update password and reset expiration
+        user.password = hashPassword;
+        user.passwordLastChanged = new Date();
+        user.passwordExpiresAt = new Date(+new Date() + 30 * 24 * 60 * 60 * 1000); // 30 days from now
+
+        await user.save();
+
+        res.json({
+            "success": true,
+            "message": "Password updated successfully"
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.json({
+            "success": false,
+            "message": "Internal Server Error!"
+        });
+    }
+};
+
+// Add a method to unlock account manually if needed
+const unlockAccount = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            return res.json({
+                "success": false,
+                "message": "User not found"
+            });
+        }
+
+        user.loginAttempts = 0;
+        user.isLocked = false;
+        user.lockUntil = null;
+        await user.save();
+
+        res.json({
+            "success": true,
+            "message": "Account unlocked successfully"
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            "success": false,
+            "message": "Internal Server Error!"
+        });
+    }
+};
+
 module.exports = {
     createUser,
     loginUser,
@@ -250,5 +358,7 @@ module.exports = {
     verifyOtpAndSetPassword,
     addToCart,getCart,
     removeFromCart,
-    getCart
+    getCart,
+    changePassword,
+    unlockAccount
 };
