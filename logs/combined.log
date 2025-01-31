@@ -102,3 +102,4 @@
 {"ip":"127.0.0.1","level":"warn","message":"CSRF attempt detected","method":"POST","path":"/api/user/login","timestamp":"2025-01-31T13:56:23.887Z","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36"}
 {"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T13:56:35.276Z"}
 {"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:06:47.488Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:07:22.114Z"}
