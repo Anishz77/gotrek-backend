@@ -8,6 +8,9 @@ const fileUpload = require('express-fileupload')
 const checkDependencies = require('./utils/versionCheck');
 const securityMonitor = require('./middleware/securityMonitor');
 const logger = require('./utils/logger');
+const session = require('express-session');
+const sessionConfig = require('./config/sessionConfig');
+const sessionMiddleware = require('./middleware/sessionMiddleware');
 
 
 // 2. Creating an express app
@@ -31,6 +34,10 @@ const corsOptions={
     optionSuccessStatus : 200
 }
 app.use(cors(corsOptions))
+
+// Add session handling - place this before routes
+app.use(session(sessionConfig));
+app.use(sessionMiddleware);
 
 // Configuration dotenv
 // dotenv.config()

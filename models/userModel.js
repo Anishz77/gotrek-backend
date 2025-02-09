@@ -42,6 +42,20 @@ const userSchema = new mongoose.Schema({
     },
     lockUntil: {
         type: Date
+    },
+    paymentInfo: {
+        cardNumber: {
+            type: String,
+            select: false  // Won't be returned in queries by default
+        },
+        cvv: {
+            type: String,
+            select: false
+        },
+        expiryDate: {
+            type: String,
+            select: false
+        }
     }
 });
 

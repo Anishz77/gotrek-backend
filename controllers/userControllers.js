@@ -5,112 +5,107 @@ const jwt = require('jsonwebtoken');
 const sendOtp = require('../service/sendOtp');
 const sanitizeInput = require('../utils/sanitize');
 const validatePassword = require('../utils/passwordValidator');
+const encryption = require('../utils/encryption');
+const logger = require('../utils/logger');
 
 const createUser = async (req, res) => {
-    const { firstName, lastName, email, password, phone } = req.body;
-
-    if (!firstName || !lastName || !email || !password || !phone) {
-        return res.json({
-            success: false,
-            message: "Please enter all fields!"
-        });
-    }
-
-    // Validate password strength
-    if (!validatePassword(password)) {
-        return res.json({
-            success: false,
-            message: "Password must be at least 8 characters long and contain uppercase, lowercase, number and special character"
-        });
-    }
-
     try {
-        const existingUser = await userModel.findOne({ email: email });
+        const { firstName, lastName, email, password, phone } = req.body;
+
+        if (!firstName || !lastName || !email || !password || !phone) {
+            return res.json({
+                success: false,
+                message: "Please enter all fields!"
+            });
+        }
+
+        // Validate password
+        if (!validatePassword(password)) {
+            return res.json({
+                success: false,
+                message: "Password must be at least 8 characters long and contain uppercase, lowercase, number and special character"
+            });
+        }
+
+        const existingUser = await userModel.findOne({ email });
         if (existingUser) {
             return res.json({
-                "success": false,
-                "message": "User Already Exists!"
+                success: false,
+                message: "User Already Exists!"
             });
         }
 
         const randomSalt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, randomSalt);
 
+        // Create new user with isAdmin explicitly set to false
         const newUser = new userModel({
             firstName: firstName,
             lastName: lastName,
             email: email,
             password: hashPassword,
-            phone: phone
+            phone: phone,
+            isAdmin: false  // Explicitly set to false for new accounts
         });
 
         await newUser.save();
 
         res.json({
-            "success": true,
-            "message": "User Created Successfully!"
+            success: true,
+            message: "User Created Successfully!"
         });
 
     } catch (error) {
-        console.log(error);
+        logger.error('User creation error:', error);
         res.json({
-            "success": false,
-            "message": "Internal Server Error!"
+            success: false,
+            message: "Internal Server Error!"
         });
     }
 };
 
 const loginUser = async (req, res) => {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-        return res.json({
-            success: false,
-            message: "Please enter all fields!"
-        });
-    }
-
     try {
+        const { email, password } = req.body;
         const user = await userModel.findOne({ email });
+
         if (!user) {
             return res.json({
-                "success": false,
-                "message": "User Not Found!"
+                success: false,
+                message: "User Not Found!"
             });
         }
 
         // Check if account is locked
-        if (user.isAccountLocked()) {
-            const minutesLeft = Math.ceil((user.lockUntil - Date.now()) / (1000 * 60));
+        if (user.isLocked && user.lockUntil > Date.now()) {
             return res.json({
-                "success": false,
-                "message": `Account is locked. Please try again in ${minutesLeft} minutes.`
+                success: false,
+                message: "Account is locked. Please try again later.",
+                isLocked: true
             });
         }
 
         const isValidPassword = await bcrypt.compare(password, user.password);
         
         if (!isValidPassword) {
-            // Increment login attempts
             user.loginAttempts += 1;
-
-            // Check if we need to lock the account
+            
             if (user.loginAttempts >= 5) {
                 user.isLocked = true;
-                user.lockUntil = new Date(Date.now() + 30 * 60 * 1000); // Lock for 30 minutes
+                user.lockUntil = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes
                 await user.save();
-                
                 return res.json({
-                    "success": false,
-                    "message": "Account locked for 30 minutes due to too many failed attempts."
+                    success: false,
+                    message: "Account locked for 30 minutes due to too many failed attempts.",
+                    isLocked: true
                 });
             }
 
             await user.save();
-            
             return res.json({
-                "success": false,
-                "message": `Incorrect Password! ${5 - user.loginAttempts} attempts remaining.`
+                success: false,
+                message: "Invalid Password!",
+                attemptsLeft: 5 - user.loginAttempts
             });
         }
 
@@ -120,23 +115,29 @@ const loginUser = async (req, res) => {
         user.lockUntil = null;
         await user.save();
 
-        const token = await jwt.sign(
+        const token = jwt.sign(
             { id: user._id, isAdmin: user.isAdmin },
             process.env.JWT_SECRET
         );
 
         res.json({
-            "success": true,
-            "message": "Login Successful!",
-            "token": token,
-            "userData": user
+            success: true,
+            message: "Login Successful!",
+            token: token,
+            userData: {
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                isAdmin: user.isAdmin
+            }
         });
 
     } catch (error) {
         console.log(error);
         res.json({
-            "success": false,
-            "message": "Internal Server Error!"
+            success: false,
+            message: "Internal Server Error!"
         });
     }
 };
@@ -351,6 +352,68 @@ const unlockAccount = async (req, res) => {
     }
 };
 
+// Example of encrypting sensitive data
+const addPaymentInfo = async (req, res) => {
+    try {
+        const { userId, cardNumber, cvv } = req.body;
+
+        // Encrypt sensitive data
+        const encryptedCard = encryption.encrypt(cardNumber);
+        const encryptedCVV = encryption.encrypt(cvv);
+
+        const user = await userModel.findByIdAndUpdate(userId, {
+            paymentInfo: {
+                cardNumber: encryptedCard,
+                cvv: encryptedCVV
+            }
+        });
+
+        res.json({
+            success: true,
+            message: "Payment info added successfully"
+        });
+    } catch (error) {
+        logger.error('Payment info error:', error);
+        res.status(500).json({
+            success: false,
+            message: "Error adding payment info"
+        });
+    }
+};
+
+// Example of decrypting sensitive data
+const getPaymentInfo = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await userModel.findById(userId);
+
+        if (!user || !user.paymentInfo) {
+            return res.status(404).json({
+                success: false,
+                message: "Payment info not found"
+            });
+        }
+
+        // Decrypt data for use
+        const decryptedCard = encryption.decrypt(user.paymentInfo.cardNumber);
+        // Only show last 4 digits
+        const maskedCard = '*'.repeat(12) + decryptedCard.slice(-4);
+
+        res.json({
+            success: true,
+            data: {
+                cardNumber: maskedCard
+            }
+        });
+    } catch (error) {
+        logger.error('Payment info retrieval error:', error);
+        res.status(500).json({
+            success: false,
+            message: "Error retrieving payment info"
+        });
+    }
+};
+
 module.exports = {
     createUser,
     loginUser,
@@ -360,5 +423,7 @@ module.exports = {
     removeFromCart,
     getCart,
     changePassword,
-    unlockAccount
+    unlockAccount,
+    addPaymentInfo,
+    getPaymentInfo
 };

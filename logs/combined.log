@@ -134,3 +134,79 @@
 {"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:12:31.386Z"}
 {"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:12:40.608Z"}
 {"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:12:44.185Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:12:51.186Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:17:08.347Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:17:14.357Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:17:20.317Z"}
+{"ip":"127.0.0.1","level":"info","message":"Incoming request","method":"GET","path":"/products/undefined","timestamp":"2025-01-31T14:18:24.420Z","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36"}
+{"duration":5,"ip":"127.0.0.1","level":"warn","message":"Request issue detected","method":"GET","path":"/products/undefined","statusCode":404,"timestamp":"2025-01-31T14:18:24.432Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:19:35.219Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:19:36.516Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:19:39.616Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:26:44.807Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:26:48.273Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:27:15.627Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:27:47.748Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:27:57.013Z"}
+{"code":"ERR_CRYPTO_INVALID_KEYLEN","level":"error","message":"Encryption error: Invalid key length","stack":"RangeError: Invalid key length\n    at Cipheriv.createCipherBase (node:internal/crypto/cipher:122:19)\n    at Cipheriv.createCipherWithIV (node:internal/crypto/cipher:141:3)\n    at new Cipheriv (node:internal/crypto/cipher:249:3)\n    at Object.createCipheriv (node:crypto:141:10)\n    at Object.encrypt (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\utils\\encryption.js:13:35)\n    at createUser (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\controllers\\userControllers.js:31:43)\n    at Layer.handle [as handle_request] (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at Route.dispatch (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\express\\lib\\router\\route.js:119:3)\n    at Layer.handle [as handle_request] (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)","timestamp":"2025-01-31T14:28:49.306Z"}
+{"level":"error","message":"User creation error: Encryption failed","stack":"Error: Encryption failed\n    at Object.encrypt (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\utils\\encryption.js:19:19)\n    at createUser (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\controllers\\userControllers.js:31:43)\n    at Layer.handle [as handle_request] (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at Route.dispatch (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\express\\lib\\router\\route.js:119:3)\n    at Layer.handle [as handle_request] (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\express\\lib\\router\\index.js:284:15\n    at Function.process_params (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at Function.handle (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\express\\lib\\router\\index.js:175:3)","timestamp":"2025-01-31T14:28:49.316Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-01-31T14:29:07.262Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-01T03:59:38.014Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-01T12:36:23.868Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-01T17:15:49.711Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-01T17:15:53.732Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-01T17:15:56.184Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-01T17:15:59.782Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-01T17:18:28.812Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-01T17:25:00.607Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-01T17:27:38.555Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-01T17:27:44.504Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-01T17:27:46.555Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:08:48.331Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:13:36.572Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:13:39.554Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:15:21.229Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:15:30.135Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:17:00.573Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:17:06.554Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:17:12.065Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:18:49.775Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:18:52.668Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:21:04.651Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:21:11.047Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:21:21.830Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:22:36.906Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:22:39.223Z"}
+{"code":8000,"codeName":"AtlasError","connectionGeneration":0,"errorResponse":{"code":8000,"codeName":"AtlasError","errmsg":"bad auth : Authentication failed.","ok":0},"level":"error","message":"MongoDB connection error: bad auth : Authentication failed.","ok":0,"stack":"MongoServerError: bad auth : Authentication failed.\n    at Connection.sendCommand (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\mongodb\\lib\\cmap\\connection.js:281:27)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Connection.command (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\mongodb\\lib\\cmap\\connection.js:304:26)\n    at async executeScram (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\mongodb\\lib\\cmap\\auth\\scram.js:79:22)\n    at async performInitialHandshake (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\mongodb\\lib\\cmap\\connect.js:101:13)\n    at async connect (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\mongodb\\lib\\cmap\\connect.js:19:9)","timestamp":"2025-02-02T04:22:39.841Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:22:58.241Z"}
+{"code":8000,"codeName":"AtlasError","connectionGeneration":0,"errorResponse":{"code":8000,"codeName":"AtlasError","errmsg":"bad auth : Authentication failed.","ok":0},"level":"error","message":"MongoDB connection error: bad auth : Authentication failed.","ok":0,"stack":"MongoServerError: bad auth : Authentication failed.\n    at Connection.sendCommand (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\mongodb\\lib\\cmap\\connection.js:281:27)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Connection.command (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\mongodb\\lib\\cmap\\connection.js:304:26)\n    at async executeScram (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\mongodb\\lib\\cmap\\auth\\scram.js:79:22)\n    at async performInitialHandshake (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\mongodb\\lib\\cmap\\connect.js:101:13)\n    at async connect (C:\\Users\\ASUS\\Desktop\\Trailtrekker\\backend\\node_modules\\mongodb\\lib\\cmap\\connect.js:19:9)","timestamp":"2025-02-02T04:22:59.068Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:23:09.957Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:24:23.872Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:24:28.073Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:24:47.095Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:25:28.208Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:25:32.471Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:25:37.819Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:26:15.875Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:26:19.545Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:27:07.322Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:27:10.089Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:27:18.207Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:27:20.530Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:29:38.036Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:29:43.702Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T04:29:49.164Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-02T06:38:22.074Z"}
+{"ip":"127.0.0.1","level":"info","message":"Incoming request","method":"GET","path":"/products/undefined","timestamp":"2025-02-02T06:43:12.182Z","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36"}
+{"ip":"127.0.0.1","level":"info","message":"Incoming request","method":"GET","path":"/products/","timestamp":"2025-02-02T06:44:05.181Z","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36"}
+{"ip":"127.0.0.1","level":"info","message":"Incoming request","method":"GET","path":"/products/undefined","timestamp":"2025-02-02T06:47:22.469Z","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36"}
+{"ip":"127.0.0.1","level":"info","message":"Incoming request","method":"GET","path":"/products/","timestamp":"2025-02-02T06:48:06.069Z","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-09T10:35:26.207Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-09T11:25:16.140Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-09T11:25:18.850Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-09T11:26:45.822Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-09T11:26:50.403Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-09T11:31:22.450Z"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-09T11:33:20.856Z"}
+{"ip":"127.0.0.1","level":"info","message":"Incoming request","method":"GET","path":"/products/undefined","timestamp":"2025-02-09T11:34:21.148Z","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"level":"info","message":"Server starting...","port":"5000","timestamp":"2025-02-09T11:34:55.229Z"}
